@@ -16,7 +16,7 @@ function readTimeUser(req,rsp){/// especifico ventas "fechVent" "cel"
   readTimeUserDB(req.body).then((dat)=>{ rsp.send(dat) })
 };
 function readTimeTime(req,resp) {///especifico para ventas "fechVent"
-  readTimeTimeDB(req.body).then((dat)=>{ resp.send(dat) })
+  readTimeTimeDB(req.body,req.body["coleccion"]).then((dat)=>{ resp.send(dat) })
 };
 function readTimeTimeUser(req,resp){/// especifico ventas "fechVent" "cel"
   readTimeTimeUserDB(req.body).then((dat)=>{ resp.send(dat) })

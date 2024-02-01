@@ -61,8 +61,8 @@ function readTimeTimeDB(dat,col){/*fecha(numerico) intervalo*/
     for (const key in db) {
       if(key==col){ colDB = db[key]; continue;}
     }
-    let tim1 = dat["tim1"];let tim2 = dat["tim2"]
-    colDB.find({$and:[{"fecha":{$gte:tim1}},{"fecha":{$lte:tim2}}]},(err,rc)=>{ colDB.count({},(err,cn)=>{ resolve({"record":rc,"count":cn}) }) })
+    let fecha1 = dat["fecha1"];let fecha2 = dat["fecha2"]
+    colDB.find({$and:[{"fecha":{$gte:fecha1}},{"fecha":{$lte:fecha2}}]},(err,rc)=>{ colDB.count({},(err,cn)=>{ resolve({"record":rc,"count":cn}) }) })
   })
 }
 function readUserDB(us){/*read user*/

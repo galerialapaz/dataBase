@@ -1,31 +1,5 @@
 const {readIdDB,updateDB} = require('../apiNedb/crudDb.js');
 
-function proformaRegister(bd){
-  let tim = bd["timeStamp"]
-  let ori = bd["origen"]
-  let des = bd["destino"]
-  let pro = bd["proforma"]
-  return new Promise(function(resolve,reject){
-    for (const key in pro) {
-      const id = pro[key]["id"];
-      const cant = pro[key]["cant"];
-      let ajuste = {"timeStamp":tim}
-      readIdDB(id,"articulos").then((r)=>{
-        let difOri 
-        if(r[0][ori]){difOri = r[0][ori] - cant; ajuste[ori] = difOri}
-        let difDes 
-        if(r[0][des]){difDes = r[0][des] + cant; ajuste[des] = difDes}
-        updateDB(id,ajuste,"articulos").then(()=>{ console.log("upCant") })
-      })
-    }
-    resolve(true)
-  })
-}
-
-
-
-
-
 function proformaUpdate(carroAnt,carroNue){
   return new Promise(function(resolve,reject){
     //////EDITANDO VENTA ITEMS//////
@@ -53,15 +27,48 @@ function proformaUpdate(carroAnt,carroNue){
   })
 }
 
-function proformaDelete(proforma){
+function proformaRegister(bd){
+  let tim = bd["timeStamp"]
+  let ori = bd["origen"]
+  let des = bd["destino"]
+  let pro = bd["proforma"]
   return new Promise(function(resolve,reject){
-    for (const key in proforma) {
-      const id = proforma[key]["id"];
-      const cant = proforma[key]["cant"];
-      rIdInv(id).then((rec)=>{
-        if(rec.length!=0){
-          let dif = rec[0]["cant"] + cant
-          updateDB(id,{cant:dif},"inventarios").then(()=>{ console.log("upCant") })
+    for (const key in pro) {
+      const id = pro[key]["id"];
+      const cant = pro[key]["cant"];
+      let ajuste = {"timeStamp":tim}
+      let difOri = "" 
+      let difDes = "" 
+      readIdDB(id,"articulos").then((r)=>{
+        if(r[0][ori]){difOri = r[0][ori] - cant; ajuste[ori] = difOri}
+        if(r[0][des]){difDes = r[0][des] + cant; ajuste[des] = difDes}
+          updateDB(id,ajuste,"articulos").then(()=>{ 
+          console.log("upCant") 
+        })
+      })
+    }
+    resolve(true)
+  })
+}
+function proformaDelete(bd){
+  let tim = bd["timeStamp"]
+  let ori = bd["origen"]
+  let des = bd["destino"]
+  let pro = bd["proforma"]
+  return new Promise(function(resolve,reject){
+    for (const key in pro) {
+      const id = pro[key]["id"];
+      const cant = pro[key]["cant"];
+      let ajuste = {"timeStamp":tim}
+      readIdDB(id,"articulos").then((r)=>{
+        if(r[0]!=undefined){
+          let difOri = ""
+          if(r[0][ori]){difOri = r[0][ori] + cant; ajuste[ori] = difOri}
+          let difDes = ""
+          if(r[0][des]){difDes = r[0][des] - cant; ajuste[des] = difDes}
+          updateDB(id,ajuste,"articulos").then(()=>{ 
+            console.log("upCant") 
+          })
         }
       })
     }
