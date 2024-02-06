@@ -77,8 +77,8 @@ function readTimeTimeUserDB(dat,col){/*fecha(numerico) intervalo y usuario*/
     for (const key in db) {
       if(key==col){ colDB = db[key]; continue;}
     }
-    let user=dat["user"]; let tim1=dat["tim1"]; let tim2=dat["tim2"]
-    colDB.find({$and:[{"fecha":{$gt:tim1}},{"fecha":{$lt:tim2}},{"user":user} ]},(err,rc)=>{ resolve({"record":rc}) });
+    let fecha1=dat["fecha1"]; let fecha2=dat["fecha2"];let user=dat["user"];
+    colDB.find({$and:[{"fecha":{$gt:fecha1}},{"fecha":{$lt:fecha2}},{"user":user} ]},(err,rc)=>{ resolve({"record":rc}) });
   })
 }
 function readTimeUserDB(dat,col){/*fecha(numerico) mayores y usuario*/

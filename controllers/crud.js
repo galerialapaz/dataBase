@@ -9,18 +9,20 @@ function readAll(req,rsp){
 function readTime(req, resp) {
   readTimeDB(req.body["timeStamp"],req.body["coleccion"]).then((dat)=>{ resp.send(dat) })
 };
-function readUser(req,rsp){/// especifico ususarios
-  readUserDB(req.body["user"]).then((dat)=>{ rsp.send(dat) })
+
+function readUser(req,rsp){/// "user"
+  readUserDB(req.body["user"],req.body["coleccion"]).then((dat)=>{ rsp.send(dat) })
 }
-function readTimeUser(req,rsp){/// especifico ventas "fechVent" "cel"
-  readTimeUserDB(req.body).then((dat)=>{ rsp.send(dat) })
+function readTimeUser(req,rsp){/// "fecha" "user"
+  readTimeUserDB(req.body,req.body["coleccion"]).then((dat)=>{ rsp.send(dat) })
 };
-function readTimeTime(req,resp) {///especifico para ventas "fechVent"
+function readTimeTime(req,resp) {/// "fecha" "fecha"
   readTimeTimeDB(req.body,req.body["coleccion"]).then((dat)=>{ resp.send(dat) })
 };
-function readTimeTimeUser(req,resp){/// especifico ventas "fechVent" "cel"
-  readTimeTimeUserDB(req.body).then((dat)=>{ resp.send(dat) })
+function readTimeTimeUser(req,resp){///"fecha"  "fecha" "user"
+  readTimeTimeUserDB(req.body,req.body["coleccion"]).then((dat)=>{ resp.send(dat) })
 };
+
 function readId(req,rsp){
   readIdDB(req.body["id"],req.body["coleccion"]).then((dat)=>{ rsp.send(dat) })
 };
@@ -33,6 +35,7 @@ function delet(req,rsp){
 function readIds(req, rsp){
   readIdsDB(req.body["coleccion"]).then((dat)=>{ rsp.send(dat) })
 };
+
 function count(req,rsp){
   countDB(req.body["coleccion"]).then((dat)=>{ rsp.send(dat) })
 };
