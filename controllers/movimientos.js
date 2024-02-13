@@ -8,10 +8,8 @@ async function createdMovimiento(req, resp){
 };
 
 async function updateMovimiento(req, resp){
-  await updateDB(req.body["id"],req.body,"movimientos")
-  let rec = await readIdDB(req.body["id"],"movimientos")
-
   //////EDITANDO PROFORMA//////
+  let rec = await readIdDB(req.body["id"],"movimientos")
   let carroAnt = rec[0]["proforma"]
   let carroNue = req.body["proforma"]
   var InvAjus = {}
@@ -31,11 +29,23 @@ async function updateMovimiento(req, resp){
       InvAjus[key] = {id:key,cant:carroNue[key]["cant"]}
     }
   }
+  let tim = req.body["timeStamp"]
+  let ori = req.body["origen"]
+  let des = req.body["destino"]
+  for (const key in InvAjus) {
+    let id = InvAjus[key]["id"];
+    let cant = InvAjus[key]["cant"];
+    let ajuste = {"timeStamp":tim}
+    let difOri = "" 
+    let difDes = "" 
+    let r = await readIdDB(id,"articulos")
+    if(r[0][ori]){difOri = r[0][ori] - cant; ajuste[ori] = difOri}
+    if(r[0][des]){difDes = r[0][des] + cant; ajuste[des] = difDes}
+    await updateDB(id,ajuste,"articulos")
+    console.log("upCant")
+  }
   //////EDITANDO PROFORMA//////
-
-  
-
-
+  await updateDB(req.body["id"],req.body,"movimientos")
   resp.send({"msg":"success"})
 };
 
